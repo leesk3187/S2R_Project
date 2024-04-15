@@ -1,3 +1,12 @@
+-- root계정에서 권한 부여
+
+GRANT ALL PRIVILEGES ON s2r.* TO 's2r'@'localhost'; 
+
+
+
+
+-- DB에서 ㄱㄱ
+
 USE s2r;
 
 CREATE TABLE ip_table (
