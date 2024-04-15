@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/styles.css" rel="stylesheet" />
+
+    <style>
+        .ip-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .ip-title {
+            color: #1f67d1;
+            font-weight : bold;
+        }
+
+        .ip-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .ip-item {
+            background-color: #dadaf5;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <title>IP List</title>
+</head>
+<body>
+    <div class="ip-container">
+        <h1 class="ip-title">IP List</h1>
+        <ul class="ip-list">
+            {% for ip in ips %}
+                <li class="ip-item">{{ ip[0] }}</li>  <!-- IP 데이터 출력 -->
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
