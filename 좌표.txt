@@ -1,0 +1,25 @@
+USE s2r;
+
+CREATE TABLE ip_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_address VARCHAR(255)
+);
+INSERT INTO ip_table (ip_address) VALUES
+    ('192.168.1.1'),
+    ('10.0.0.1'),
+    ('172.16.0.1');
+
+CREATE TABLE IF NOT EXISTS coordinates_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    latitude DECIMAL(9, 6),
+    longitude DECIMAL(9, 6)
+);
+
+
+INSERT INTO coordinates_table (latitude, longitude) VALUES -- y, x
+(37.7749, -122.4194), -- 샌프란시스코
+(40.7128, -74.0060),  -- 뉴욕
+(51.5074, -0.1278),   -- 런던
+(48.8566, 2.3522),    -- 파리
+(35.6895, 139.6917),  -- 도쿄
+(36.7991, 127.0749); -- 선문대

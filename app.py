@@ -53,21 +53,22 @@ def password():
 
 @app.route('/map')
 def map():
-    return render_template("layout-static.html")
+    coordinates = get_all_coordinates()
+    print(coordinates)
+    # 좌표 정보를 템플릿으로 전달하여 지도에 표시
+    return render_template("layout-static.html", coordinates=coordinates)
 
 @app.route('/ip-list') # IP List 페이지
 def ip_list():
     ips = get_all_ips() # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
-    print("ips: ")
-    print(ips)
-    
     return render_template("ip-list.html", ips=ips) # ip-list.html로 데이터 전달
 
 
 
 
+
 if __name__ == '__main__':
- 
+    
     app.run(host='0.0.0.0', debug=True, port=9999)
     
     # 박

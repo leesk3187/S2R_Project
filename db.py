@@ -9,6 +9,18 @@ def test_db_connection():
     conn = pymysql.connect(host='localhost', user='s2r',password='s2r', db='s2r', charset='utf8')
     return conn
 
+def get_all_coordinates():
+    try:
+        conn = test_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT latitude, longitude FROM coordinates_table")  # 좌표 정보를 가져올 테이블 이름으로 수정
+        coordinates = cur.fetchall()
+        cur.close()
+        conn.close()
+        return coordinates
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+        return []
 
 def sql_select(query, data):
     try:
