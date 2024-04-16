@@ -1,9 +1,13 @@
 from flask import *
 from db import *
-
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 app.secret_key = 'test'
+load_dotenv()
+
+
 
 @app.route('/')
 def index():
@@ -54,10 +58,9 @@ def password():
 @app.route('/map')
 def map():
     coordinates = get_all_coordinates()
-    print(coordinates)
+    google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     # 좌표 정보를 템플릿으로 전달하여 지도에 표시
-    return render_template("layout-static.html", coordinates=coordinates)
-
+    return render_template("layout-static.html", coordinates=coordinates, google_maps_api_key=google_maps_api_key)
 @app.route('/ip-list') # IP List 페이지
 def ip_list():
     ips = get_all_ips() # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
