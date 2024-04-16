@@ -1,11 +1,13 @@
 from flask import *
 from db import *
-from dotenv import load_dotenv
-import os
+
+from dotenv import load_dotenv # .env 파일 불러오기
+import os # os 명령어 사용
 
 app = Flask(__name__)
 app.secret_key = 'test'
-load_dotenv()
+
+load_dotenv() # .env 파일 불러오기
 
 
 
@@ -58,9 +60,13 @@ def password():
 @app.route('/map')
 def map():
     coordinates = get_all_coordinates()
-    google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+    google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY') # .env에서 해당 키 가져와서 변수에 저장. 변수를 통해 키에 접근 가능
     # 좌표 정보를 템플릿으로 전달하여 지도에 표시
     return render_template("layout-static.html", coordinates=coordinates, google_maps_api_key=google_maps_api_key)
+
+
+
+
 @app.route('/ip-list') # IP List 페이지
 def ip_list():
     ips = get_all_ips() # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
