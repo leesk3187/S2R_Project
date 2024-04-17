@@ -55,5 +55,11 @@ def password():
 def map():
     return render_template("layout-static.html")
 
+@app.route('/get_locations')
+def get_locations_():
+    locations = get_locations()
+    print(locations)
+    return jsonify(locations)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=9999)

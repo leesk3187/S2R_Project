@@ -1,37 +1,44 @@
-window.initMap = function () {
+function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 37.5400456, lng: 126.9921017 },
-    zoom: 10,
+      center: { lat: 37.5665, lng: 126.9780 }, // 기본 중심 좌표를 서울로 설정
+      zoom: 10,
   });
 
-  const ips = [
-    { name: "코엑스몰", lat: 37.5115557, lng: 127.0595261 },
-    { name: "고투몰", lat: 37.5062379, lng: 127.0050378 },
-    { name: "동대문시장", lat: 37.566596, lng: 127.007702 },
-    { name: "IFC몰", lat: 37.5251644, lng: 126.9255491 },
-    { name: "롯데월드타워몰", lat: 37.5125585, lng: 127.1025353 },
-    { name: "명동지하상가", lat: 37.563692, lng: 126.9822107 },
-    { name: "타임스퀘어", lat: 37.5173108, lng: 126.9033793 },
-  ];
+  // 정보 창 객체 생성
+  const infoWindow = new google.maps.InfoWindow();
 
+  // 지도 경계 조정을 위한 LatLngBounds 객체 생성
   const bounds = new google.maps.LatLngBounds();
-  const infowindow = new google.maps.InfoWindow();
 
-  ips.forEach(({label, name, lat, lng}) =>{
-    const marker = new google.maps.Marker({
-      position:{lat, lng},
-      map
-    });
-    bounds.extend(marker.position);
+  fetch('/get_locations') // Flask 서버에서 위치 데이터를 가져옴
+      .then(response => response.json())
+      .then(data => {
+          data.forEach(locationArray => {
+              const [hostname, latitude, longitude] = locationArray; // 배열 구조 분해 할당을 사용
+              
+              // 마커 생성
+              const marker = new google.maps.Marker({
+                  position: { lat: latitude, lng: longitude },
+                  map: map,
+                  title: hostname,
+              });
 
-    marker.addListener("click", () => {
-      map.panTo(marker.position);
-      infowindow.setContent(name);
-      infowindow.open({
-        anchor: marker,
-        map,
-      });
-    });
-  });
-  map.fitBounds(bounds);
-};
+              // 경계를 마커의 위치로 확장
+              bounds.extend(marker.position);
+
+              // 마커 클릭 이벤트 리스너 추가
+              marker.addListener('click', () => {
+                  // 정보 창에 hostname 표시
+                  infoWindow.setContent(hostname);
+                  infoWindow.open(map, marker);
+
+                  // 지도 중심을 마커의 위치로 이동
+                  map.panTo(marker.position);
+              });
+          });
+
+          // 모든 마커를 포함하도록 지도 경계 조정
+          map.fitBounds(bounds);
+      })
+      .catch(error => console.error('Error:', error));
+}

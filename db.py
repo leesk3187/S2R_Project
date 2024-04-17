@@ -2,7 +2,7 @@
 import pymysql
 
 def get_db_connection():
-    conn = pymysql.connect(host='127.0.0.1', user='root', db='s2r', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root',password='0000', db='ips', charset='utf8')
     return conn
 
 def sql_select(query, data):
@@ -30,6 +30,25 @@ def sql_insert(query, data):
     except pymysql.MySQLError as e:
         print(f"SQL Error: {e}")
         return False
+    
+# 위치 정보를 조회하는 쿼리 
+def get_locations():
+    select_query = "SELECT hostname, latitude, longitude FROM ipinfo"
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor() 
+        cur.execute(select_query)
+
+         # Decimal 타입을 float로 변환
+        result = [(hostname, float(latitude), float(longitude)) for hostname, latitude, longitude in cur.fetchall()]
+        return result
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+        return []
+    finally:
+        if conn:
+            conn.close()
 
 insert_query = "insert into register (userid, userpw) values(%s, %s)"
 select_query = "select userid, userpw from register where userid=%s and userpw=%s"
