@@ -34,15 +34,22 @@ def register():
     if request.method == 'POST':
         userid = request.form.get('userid')
         userpw = request.form.get('userpw')
+        email = request.form.get('email')
+        username = request.form.get('username')
+        userpwConfirm = request.form.get('userpwConfirm')
 
-        user_info = (userid, userpw)
-        result = sql_insert(insert_query, user_info)
 
-        if result == True:
-            flash("회원가입 성공!")
-            return redirect(url_for('login'))
+        insert_query = "INSERT INTO users (userID, PW, Email, name) VALUES (%s, %s, %s, %s)"
+        user_info = (userid, userpw, email, username)
+        if(userpw==userpwConfirm):
+            if sql_insert(insert_query, user_info):
+                flash("가입 성공!")
+                return redirect(url_for('login'))
+            else:
+                flash("가입 실패")
+                return redirect(url_for('register'))
         else:
-            flash("가입 실패")
+            flash("비밀 번호를 확인하세요")
             return redirect(url_for('register'))
 
     return render_template("register.html")
