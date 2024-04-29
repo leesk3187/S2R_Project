@@ -1,10 +1,11 @@
 from flask import *
 from db import *
-
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 app.secret_key = 'test'
-
+print(load_dotenv())
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -24,7 +25,6 @@ def login():
         else:
             flash("로그인 실패")
             return redirect(url_for('login'))
-        
     else:
         return render_template("login.html")
     
@@ -60,7 +60,8 @@ def password():
 
 @app.route('/map')
 def map():
-    return render_template("layout-static.html")
+    google_maps_api_key= os.getenv("GOOGLE_API_KEY")
+    return render_template("layout-static.html", google_maps_api_key=google_maps_api_key)
 
 @app.route('/get_locations')
 def get_locations_():
