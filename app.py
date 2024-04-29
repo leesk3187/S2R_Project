@@ -13,7 +13,7 @@ app.secret_key = 'test'
 
 @app.route('/')
 def index():
-    return render_template("index.html", title="Home")
+    return render_template("index.html", title="HOME")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -70,7 +70,7 @@ def map():
 @app.route('/ip-list') # IP List 페이지
 def ip_list():
     ips = get_all_ips() # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
-    return render_template("ip-list.html", ips=ips) # ip-list.html로 데이터 전달
+    return render_template("ip-list.html", ips=ips, title="IP LIST") # ip-list.html로 데이터 전달
 
 
 
