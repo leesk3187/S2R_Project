@@ -7,13 +7,13 @@ import os # os 명령어 사용
 app = Flask(__name__)
 app.secret_key = 'test'
 
-load_dotenv() # .env 파일 불러오기
+ # .env 파일 불러오기
 
 
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title="Home")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
