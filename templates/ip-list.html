@@ -1,11 +1,16 @@
-{% extends 'layout.html' %}
+{% extends 'sidenav-layout.html' %}
+
 {% block content %}
-    <div class="ip-container">
-        <h1 class="ip-title">IP List</h1>
-        <ul class="ip-list">
-            {% for ip in ips %}
-                <li class="ip-item">{{ ip[0] }}</li>  <!-- IP 데이터 출력 -->
-            {% endfor %}
-        </ul>
-    </div>
+  <div class="ip-container">
+    <h1 class="ip-title">IP List</h1>
+    <ul class="ip-list">
+      {% for ip in ips %}
+        <li class="ip-item">{{ ip[0] }}</li> <!-- IP 데이터 출력 -->
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <link href="/static/css/ip-list.css" rel="stylesheet" />
 {% endblock %}
