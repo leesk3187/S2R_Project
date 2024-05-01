@@ -1,0 +1,23 @@
+.ip-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ip-title {
+    color: #1f67d1;
+    font-weight : bold;
+}
+
+.ip-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ip-item {
+    background-color: #dadaf5;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
