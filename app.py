@@ -5,10 +5,12 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'test'
-print(load_dotenv())
+
+
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title="S2R-Home")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -60,14 +62,21 @@ def password():
 
 @app.route('/map')
 def map():
-    google_maps_api_key= os.getenv("GOOGLE_API_KEY")
-    return render_template("layout-static.html", google_maps_api_key=google_maps_api_key)
+    google_maps_api_key= os.getenv('GOOGLE_MAPS_API_KEY')
+    return render_template("layout-static.html", google_maps_api_key=google_maps_api_key, title="S2R-Map")
+
+@app.route('/ip-list') # IP List 페이지
+def ip_list():
+    ips = get_all_ips() # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
+    return render_template("ip-list.html", ips=ips, title="S2R-IP List") # ip-list.html로 데이터 전달
 
 @app.route('/get_locations')
 def get_locations_():
     locations = get_locations()
     print(locations)
     return jsonify(locations)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=9999)

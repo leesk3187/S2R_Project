@@ -5,6 +5,11 @@ def get_db_connection():
     conn = pymysql.connect(host='localhost', user='root',password='0000', db='ips', charset='utf8')
     return conn
 
+
+def ip_db_connection(): # ip-list db 따로 구성할 경우 수정
+    conn = pymysql.connect(host='localhost', user='s2r',password='s2r', db='s2r', charset='utf8')
+    return conn
+
 def sql_select(query, data):
     try:
         conn = get_db_connection()
@@ -30,6 +35,21 @@ def sql_insert(query, data):
     except pymysql.MySQLError as e:
         print(f"SQL Error: {e}")
         return False
+    
+def get_all_ips(): # ip 가져오기
+    try:
+        conn = ip_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT ip_address FROM ip_table")  # ip주소 컬럼 이름, ip테이블 이름 수정
+        result = cur.fetchall()
+        cur.close()
+        conn.close()
+        return result
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+        return []
+    
+    
     
 # 위치 정보를 조회하는 쿼리 
 def get_locations():
