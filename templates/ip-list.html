@@ -13,6 +13,116 @@
 
     </ul>
   </div>
+
+  
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      DataTable Example
+    </div>
+    <div class="card-body">
+      <div
+        class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns datatable-empty"
+      >
+        <div class="datatable-top">
+          <div class="datatable-dropdown">
+            <label>
+              <select class="datatable-selector">
+                <option value="5">5</option>
+                <option value="10" selected="">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+              </select>
+              entries per page
+            </label>
+          </div>
+          <div class="datatable-search">
+            <input
+              class="datatable-input"
+              placeholder="Search..."
+              type="search"
+              title="Search within table"
+              aria-controls="datatablesSimple"
+            />
+          </div>
+        </div>
+        <div class="datatable-container">
+          <table class="datatable-table">
+            <thead>
+              <tr>
+                <th
+                  data-sortable="true"
+                  style="width: 20%"
+                >
+                  <a href="#" class="datatable-sorter">IP</a>
+                </th>
+                <th
+                  data-sortable="true"
+                  style="width: 14.319526627218934%"
+                >
+                  <a href="#" class="datatable-sorter">호스트</a>
+                </th>
+                <th
+                  data-sortable="true"
+                  style="width: 10%"
+                >
+                  <a href="#" class="datatable-sorter">위도</a>
+                </th>
+                <th
+                  data-sortable="true"
+                  style="width: 10%"
+                >
+                  <a href="#" class="datatable-sorter">경도</a>
+                </th>
+                <th
+                  data-sortable="true"
+                  style="width: 8%"
+                >
+                  <a href="#" class="datatable-sorter">지역</a>
+                </th>
+                <th
+                  data-sortable="true"
+                  style="width: 13%"
+                >
+                  <a href="#" class="datatable-sorter">상세지역</a>
+                </th>
+                <th
+                  data-sortable="true"
+                  style="width: 10%"
+                >
+                  <a href="#" class="datatable-sorter">국가</a>
+                </th>
+                <th
+                data-sortable="true"
+                style="width: 30%"
+              >
+                <a href="#" class="datatable-sorter">접속여부</a>
+              </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="datatable-empty" colspan="8">
+                  No entries found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="datatable-bottom">
+          <div class="datatable-info"></div>
+          <nav class="datatable-pagination">
+            <ul class="datatable-pagination-list"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 {% endblock %}
 
 {% block scripts %}
