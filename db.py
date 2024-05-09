@@ -38,9 +38,9 @@ def sql_insert(query, data):
     
 def get_all_ips(): # ip 가져오기
     try:
-        conn = ip_db_connection()
+        conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT ip_address FROM ip_table")  # ip주소 컬럼 이름, ip테이블 이름 수정
+        cur.execute("SELECT ip, hostname, latitude, longitude, city,region,country_name, access_,accessTIme  FROM ipinfo") 
         result = cur.fetchall()
         cur.close()
         conn.close()

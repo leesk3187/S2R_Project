@@ -72,6 +72,7 @@ def map():
 @app.route("/ip-list")  # IP List 페이지
 def ip_list():
     ips = get_all_ips()  # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
+    print(ips)
     return render_template(
         "ip-list.html", ips=ips, title="S2R-IP List"
     )  # ip-list.html로 데이터 전달

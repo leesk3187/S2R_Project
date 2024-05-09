@@ -4,17 +4,8 @@
   <div class="ip-container">
     <h1 class="ip-title">IP List</h1>
     <ul class="ip-list">
-        
-        DB 연결하면 여기에 ip리스트 뜸
-
-      {% for ip in ips %}
-        <li class="ip-item">{{ ip[0] }}</li> <!-- IP 데이터 출력 -->
-      {% endfor %}
-
     </ul>
   </div>
-
-  
 
   <div class="card mb-4">
     <div class="card-header">
@@ -22,107 +13,40 @@
       DataTable Example
     </div>
     <div class="card-body">
-      <div
-        class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns datatable-empty"
-      >
-        <div class="datatable-top">
-          <div class="datatable-dropdown">
-            <label>
-              <select class="datatable-selector">
-                <option value="5">5</option>
-                <option value="10" selected="">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-              </select>
-              entries per page
-            </label>
-          </div>
-          <div class="datatable-search">
-            <input
-              class="datatable-input"
-              placeholder="Search..."
-              type="search"
-              title="Search within table"
-              aria-controls="datatablesSimple"
-            />
-          </div>
-        </div>
-        <div class="datatable-container">
-          <table class="datatable-table">
-            <thead>
-              <tr>
-                <th
-                  data-sortable="true"
-                  style="width: 20%"
-                >
-                  <a href="#" class="datatable-sorter">IP</a>
-                </th>
-                <th
-                  data-sortable="true"
-                  style="width: 14.319526627218934%"
-                >
-                  <a href="#" class="datatable-sorter">호스트</a>
-                </th>
-                <th
-                  data-sortable="true"
-                  style="width: 10%"
-                >
-                  <a href="#" class="datatable-sorter">위도</a>
-                </th>
-                <th
-                  data-sortable="true"
-                  style="width: 10%"
-                >
-                  <a href="#" class="datatable-sorter">경도</a>
-                </th>
-                <th
-                  data-sortable="true"
-                  style="width: 8%"
-                >
-                  <a href="#" class="datatable-sorter">지역</a>
-                </th>
-                <th
-                  data-sortable="true"
-                  style="width: 13%"
-                >
-                  <a href="#" class="datatable-sorter">상세지역</a>
-                </th>
-                <th
-                  data-sortable="true"
-                  style="width: 10%"
-                >
-                  <a href="#" class="datatable-sorter">국가</a>
-                </th>
-                <th
-                data-sortable="true"
-                style="width: 30%"
-              >
-                <a href="#" class="datatable-sorter">접속여부</a>
-              </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="datatable-empty" colspan="8">
-                  No entries found
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="datatable-bottom">
-          <div class="datatable-info"></div>
-          <nav class="datatable-pagination">
-            <ul class="datatable-pagination-list"></ul>
-          </nav>
-        </div>
+      <div class="datatable-wrapper">
+        <table class="datatable-table">
+          <thead>
+            <tr>
+              <th data-sortable="true" style="width: 10%">IP</th>
+              <th data-sortable="true" style="width: 14.319526627218934%">호스트</th>
+              <th data-sortable="true" style="width: 10%">위도</th>
+              <th data-sortable="true" style="width: 10%">경도</th>
+              <th data-sortable="true" style="width: 8%">지역</th>
+              <th data-sortable="true" style="width: 13%">상세지역</th>
+              <th data-sortable="true" style="width: 10%">국가</th>
+              <th data-sortable="true" style="width: 10%">성공여부</th>
+              <th data-sortable="true" style="width: 30%">접속시간</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ip in ips %}
+            <tr>
+              <td>{{ ip[0] }}</td>
+              <td>{{ ip[1] }}</td>
+              <td>{{ ip[2] }}</td>
+              <td>{{ ip[3] }}</td>
+              <td>{{ ip[5] }}</td>
+              <td>{{ ip[4] }}</td>
+              <td>{{ ip[6] }}</td>
+              <td>{{ ip[7] }}</td>
+              <td>{{ ip[8] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-
-
-
 {% endblock %}
 
 {% block scripts %}
