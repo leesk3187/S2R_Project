@@ -70,5 +70,41 @@ def get_locations():
         if conn:
             conn.close()
 
+# 사용자 ID를 기반으로 비밀번호를 가져오는 쿼리
+def get_password_by_id(user_id):
+    select_query = "SELECT userpw FROM users WHERE userid = %s"
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(select_query, (user_id,))
+        password = cursor.fetchone()
+        print(password)
+        return password
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+        return None
+    finally:
+        if conn:
+            conn.close()
+
+# 사용자의 비밀번호를 초기화하는 함수
+def reset_user_password(user_id):
+    update_query = "UPDATE users SET userpw = %s WHERE userid = %s"
+    new_password = "reset0513"
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(update_query, (new_password, user_id))
+        conn.commit()
+        return True
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+        return False
+    finally:
+        if conn:
+            conn.close()
+                     
 insert_query = "insert into register (userid, userpw) values(%s, %s)"
 select_query = "select userid, userpw from register where userid=%s and userpw=%s"
