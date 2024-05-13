@@ -12,8 +12,32 @@
 ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
+<script>
+
+    window.addEventListener('DOMContentLoaded', event => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (dropdownToggle && dropdownMenu) {
+            dropdownToggle.addEventListener('click', event => {
+                event.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+        }
+    });
+</script>
+
 {% endblock %}
+
 {% block content %}
+<head>
+    <!-- 이전에 있는 코드들... -->
+    <style>
+        .dropdown-menu {
+            left: -110px; /* 원하는 만큼의 이동값을 지정합니다. 음수는 왼쪽으로 이동하고, 양수는 오른쪽으로 이동합니다. */
+        }
+    </style>
+</head>
 <div class="container-fluid px-4">
     <h1 class="mt-4">Static Navigation</h1>
     <ol class="breadcrumb mb-4">
