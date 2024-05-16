@@ -6,10 +6,8 @@ function initMap() {
 
   // 정보 창 객체 생성
   const infoWindow = new google.maps.InfoWindow();
-
   // 지도 경계 조정을 위한 LatLngBounds 객체 생성
   const bounds = new google.maps.LatLngBounds();
-
   fetch('/get_locations') // Flask 서버에서 위치 데이터를 가져옴
       .then(response => response.json())
       .then(data => {
