@@ -2,8 +2,9 @@
 import pymysql
 
 def get_db_connection():
-    conn = pymysql.connect(host='localhost', user='root', db='s2r', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='s2r',password='s2r', db='s2r', charset='utf8')
     return conn
+
 
 
 def ip_db_connection(): # ip-list db 따로 구성할 경우 수정
