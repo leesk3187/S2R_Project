@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.secret_key = "test"
 
 users = {
+    'userid': ''
 }
 
 
@@ -32,16 +33,16 @@ def login():
         else:
             flash("로그인 실패")
             
-            return redirect(url_for("users/login"))
+            return redirect(url_for("login"))
     else:
         return render_template("users/login.html")
     
-@app.route("/logout", methods=["POST"])
+@app.route("/logout")
 def logout():
-    if request.method == "POST":
-        session.clear()
-        flash("로그아웃 되었습니다.")
-        return redirect(url_for("index", title="S2R_Home"))
+    session.pop('userid', None)
+    flash("로그아웃 되었습니다.")
+    return redirect(url_for('index'))
+        
 
 
 @app.route('/register', methods = ['GET', 'POST'])
