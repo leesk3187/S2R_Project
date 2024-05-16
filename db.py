@@ -1,5 +1,6 @@
 # db.py
 import pymysql
+import hashlib
 
 def get_db_connection():
     conn = pymysql.connect(host='localhost', user='root',password='0000', db='ips', charset='utf8')
@@ -79,8 +80,10 @@ def get_password_by_id(user_id):
         cursor = conn.cursor()
         cursor.execute(select_query, (user_id,))
         password = cursor.fetchone()
-        print(password)
-        return password
+        if password:
+            return password[0]  # 해시된 비밀번호 반환
+        else:
+            return None
     except pymysql.MySQLError as e:
         print(f"SQL Error: {e}")
         return None
@@ -90,21 +93,27 @@ def get_password_by_id(user_id):
 
 # 사용자의 비밀번호를 초기화하는 함수
 def reset_user_password(user_id):
-    update_query = "UPDATE users SET userpw = %s WHERE userid = %s"
-    new_password = "reset0513"
-    conn = None
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute(update_query, (new_password, user_id))
-        conn.commit()
-        return True
-    except pymysql.MySQLError as e:
-        print(f"SQL Error: {e}")
+    # 데이터베이스에서 사용자의 비밀번호 가져오기
+    db_password = get_password_by_id(user_id)
+    if db_password:
+        # 새 비밀번호를 해싱하여 저장
+        new_password = hashlib.sha256("reset0513".encode()).hexdigest()
+        update_query = "UPDATE users SET userpw = %s WHERE userid = %s"
+        conn = None
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(update_query, (new_password, user_id))
+            conn.commit()
+            return True
+        except pymysql.MySQLError as e:
+            print(f"SQL Error: {e}")
+            return False
+        finally:
+            if conn:
+                conn.close()
+    else:
         return False
-    finally:
-        if conn:
-            conn.close()
                      
 insert_query = "insert into register (userid, userpw) values(%s, %s)"
 select_query = "select userid, userpw from register where userid=%s and userpw=%s"

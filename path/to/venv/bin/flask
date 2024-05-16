@@ -1,4 +1,4 @@
-#!/Users/mooji/startbootstrap-sb-admin-gh-pages/path/to/venv/bin/python3.12
+#!/Users/mooji/s2r/path/to/venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
