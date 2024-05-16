@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/mooji/startbootstrap-sb-admin-gh-pages/path/to/venv"
+set -gx VIRTUAL_ENV "/Users/mooji/s2r/path/to/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

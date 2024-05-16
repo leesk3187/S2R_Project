@@ -6,11 +6,14 @@ import os
 app = Flask(__name__)
 app.secret_key = "test"
 
+users = {
+}
+
 
 @app.route("/")
 def index():
+    
     return render_template("index.html", title="S2R-Home")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -22,13 +25,23 @@ def login():
         result = sql_select(select_query, user_info)
 
         if result:
+            users['userid'] = userid
+            session['userid'] = userid
             flash("로그인 성공")
             return redirect(url_for("index"))
         else:
             flash("로그인 실패")
+            
             return redirect(url_for("users/login"))
     else:
         return render_template("users/login.html")
+    
+@app.route("/logout", methods=["POST"])
+def logout():
+    if request.method == "POST":
+        session.clear()
+        flash("로그아웃 되었습니다.")
+        return redirect(url_for("index", title="S2R_Home"))
 
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -63,44 +76,71 @@ def password():
 
 @app.route("/map")
 def map():
-    google_maps_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-    return render_template(
-        "layout-static.html", google_maps_api_key=google_maps_api_key, title="S2R-Map"
-    )
+    if 'userid' in session and session['userid'] == users['userid']:
+        google_maps_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+        return render_template(
+            "layout-static.html", google_maps_api_key=google_maps_api_key, title="S2R-Map"
+        )
+    else:
+        flash("로그인이 필요합니다.")
+        return redirect(url_for('login'))
 
 
 @app.route("/ip-list")  # IP List 페이지
 def ip_list():
-    ips = get_all_ips()  # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
-    print(ips)
-    return render_template(
-        "ip-list.html", ips=ips, title="S2R-IP List"
-    )  # ip-list.html로 데이터 전달
+    if 'userid' in session and session['userid'] == users['userid']:
+        ips = get_all_ips()  # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
+        print(ips)
+        return render_template(
+            "ip-list.html", ips=ips, title="S2R-IP List"
+        )  # ip-list.html로 데이터 전달
+    else:
+        flash("로그인이 필요합니다.")
+        return redirect(url_for('login'))
+
 
 @app.route("/tables")
 def tables():
-    return render_template(
-        "tables.html"
-    )
-    
+    if 'userid' in session and session['userid'] == users['userid']:
+        return render_template(
+            "tables.html"
+        )
+    else:
+        flash("로그인이 필요합니다.")
+        return redirect(url_for('login'))
+
+
 @app.route("/success-ip")
 def success_ip():
-    return render_template(
-        "success-ip.html", title="S2R-Success-IP"
-    )
+    if 'userid' in session and session['userid'] == users['userid']:
+        return render_template(
+            "success-ip.html", title="S2R-Success-IP"
+        )
+    else:
+        flash("로그인이 필요합니다.")
+        return redirect(url_for('login'))
+    
 @app.route("/failed-ip")
 def failed_ip():
-    return render_template(
-        "failed-ip.html", title="S2R-Failed-IP"
-    )
+    if 'userid' in session and session['userid'] == users['userid']:
+        return render_template(
+            "failed-ip.html", title="S2R-Failed-IP"
+        )
+    else:
+        flash("로그인이 필요합니다.")
+        return redirect(url_for('login'))
     
     
 
 @app.route("/get_locations")
 def get_locations_():
-    locations = get_locations()
-    print(locations)
-    return jsonify(locations)
+    if 'userid' in session and session['userid'] == users['userid']:
+        locations = get_locations()
+        print(locations)
+        return jsonify(locations)
+    else:
+        flash("로그인이 필요합니다.")
+        return redirect(url_for("login"))
 
 
 if __name__ == "__main__":

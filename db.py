@@ -2,7 +2,7 @@
 import pymysql
 
 def get_db_connection():
-    conn = pymysql.connect(host='localhost', user='root',password='0000', db='ips', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root', db='s2r', charset='utf8')
     return conn
 
 
@@ -20,6 +20,7 @@ def sql_select(query, data):
         conn.close()
         return result
     except pymysql.MySQLError as e:
+        print("bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         print(f"SQL Error: {e}")
         return False
 
@@ -71,4 +72,4 @@ def get_locations():
             conn.close()
 
 insert_query = "insert into register (userid, userpw) values(%s, %s)"
-select_query = "select userid, userpw from register where userid=%s and userpw=%s"
+select_query = "select userid, userpw from users where userid=%s and userpw=%s"
