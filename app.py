@@ -2,13 +2,10 @@ from flask import *
 from db import *
 from dotenv import load_dotenv
 import os
+import hashlib, re
 
 app = Flask(__name__)
 app.secret_key = "test"
-
-users = {
-}
-
 
 @app.route("/")
 def index():
@@ -20,13 +17,14 @@ def login():
     if request.method == "POST":
         userid = request.form.get("userid")
         userpw = request.form.get("userpw")
+        userpw = hashlib.sha256(userpw.encode()).hexdigest()
 
         user_info = (userid, userpw)
+        select_query = "select * from users where userid=%s and userpw=%s"
         result = sql_select(select_query, user_info)
 
-        if result:
-            users['userid'] = userid
-            session['userid'] = userid
+        if result[0][1] == userid and result[0][2] == userpw: # 입력한 비번과 DB 저장된 정보 비교
+            session['uid'] = result[0][0] # 세션 관리 시작
             flash("로그인 성공")
             return redirect(url_for("index"))
         else:
@@ -36,16 +34,24 @@ def login():
     else:
         return render_template("users/login.html")
     
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
-    session.pop('userid', None)
-    flash("로그아웃 되었습니다.")
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        try:
+            session.clear('uid', None)
+            flash("로그아웃 되었습니다.")
+            return redirect(url_for('index'))
+        except:
+            flash("로그인 하세요")
+            return redirect(url_for('index'))
 
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':
+
+        pattern = r'^((25[0-5]|2[0-4]\d|[01]?\d\d?)(\.|$)){4}$'
+
         userid = request.form.get('userid')
         userpw = request.form.get('userpw')
         db_ip = request.form.get('db_ip')
@@ -54,15 +60,36 @@ def register():
         db_userpw = request.form.get('db_userpw')
         db_name = request.form.get('db_name')
 
-        insert_query = "INSERT INTO users (userid, userpw, db_ip, db_port, db_username, db_userpw, db_name) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        user_info = (userid, userpw, db_ip, db_port, db_username, db_userpw, db_name)
+        check_userid_query = "SELECT * FROM users WHERE userid=%s"
+        existing_user = sql_select(check_userid_query, (userid,))
 
-        if sql_insert(insert_query, user_info):
-            flash("가입 성공!")
-            return redirect(url_for('login'))
-        else:
-            flash("가입 실패")
+        userid_len = len(userid)
+        userpw_len = len(userpw)
+
+        
+        print('??여기?')
+        if existing_user[0][1] == userid:
             return redirect(url_for('register'))
+
+        try:
+            db_port = int(db_port)
+        except ValueError:
+            flash("DB 포트 번호가 유효하지 않습니다. 정수를 입력해 주세요.")
+            return redirect(url_for('register'))
+        
+        if (userid_len >= 4 and userid_len <= 16) and (userpw_len >= 8 and userpw_len <= 16): # 아이디 비번 자릿수 검사
+            if (db_port > 0 and db_port <= 65535 and re.match(pattern, db_ip)): # DB 포트 및 ip 검사
+                userpw = hashlib.sha256(userpw.encode()).hexdigest()
+
+                insert_query = "INSERT INTO users (userid, userpw, db_ip, db_port, db_username, db_userpw, db_name) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                user_info = (userid, userpw, db_ip, db_port, db_username, db_userpw, db_name)
+                print("register test")
+                if sql_insert(insert_query, user_info):
+                    flash("가입 성공!")
+                    return redirect(url_for('login'))
+                else:
+                    flash("가입 실패")
+                    return redirect(url_for('register'))
     
 
     return render_template("users/register.html")
@@ -75,7 +102,7 @@ def password():
 
 @app.route("/map")
 def map():
-    if 'userid' in session and session['userid'] == users['userid']:
+    if 'uid' in session:
         google_maps_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
         return render_template(
             "layout-static.html", google_maps_api_key=google_maps_api_key, title="S2R-Map"
@@ -87,7 +114,7 @@ def map():
 
 @app.route("/ip-list")  # IP List 페이지
 def ip_list():
-    if 'userid' in session and session['userid'] == users['userid']:
+    if 'uid' in session:
         ips = get_all_ips()  # db.py에서 get_all_ips() 함수 가져옴 = ip 데이터
         print(ips)
         return render_template(
@@ -100,7 +127,7 @@ def ip_list():
 
 @app.route("/tables")
 def tables():
-    if 'userid' in session and session['userid'] == users['userid']:
+    if 'uid' in session:
         return render_template(
             "tables.html"
         )
@@ -111,7 +138,7 @@ def tables():
 
 @app.route("/success-ip")
 def success_ip():
-    if 'userid' in session and session['userid'] == users['userid']:
+    if 'uid' in session:
         return render_template(
             "success-ip.html", title="S2R-Success-IP"
         )
@@ -121,7 +148,7 @@ def success_ip():
     
 @app.route("/failed-ip")
 def failed_ip():
-    if 'userid' in session and session['userid'] == users['userid']:
+    if 'uid' in session:
         return render_template(
             "failed-ip.html", title="S2R-Failed-IP"
         )
@@ -132,7 +159,7 @@ def failed_ip():
 
 @app.route("/get_locations")
 def get_locations_():
-    if 'userid' in session and session['userid'] == users['userid']:
+    if 'uid' in session:
         locations = get_locations()
         print(locations)
         return jsonify(locations)

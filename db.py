@@ -3,7 +3,7 @@ import pymysql
 import hashlib
 
 def get_db_connection():
-    conn = pymysql.connect(host='localhost', user='s2r',password='s2r', db='s2r', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root', db='ips', charset='utf8')
     
     return conn
 
@@ -21,7 +21,7 @@ def sql_select(query, data):
         conn.close()
         return result
     except pymysql.MySQLError as e:
-        print(f"SQL Error: {e}")
+        print(f"SQL select Error: {e}")
         return False
 
 def sql_insert(query, data):
@@ -34,7 +34,7 @@ def sql_insert(query, data):
         conn.close()
         return True
     except pymysql.MySQLError as e:
-        print(f"SQL Error: {e}")
+        print(f"SQL insert Error: {e}")
         return False
     
 def get_all_ips(): # ip 가져오기
@@ -116,4 +116,3 @@ def reset_user_password(user_id):
         return False
                      
 insert_query = "insert into users (userid, userpw) values(%s, %s)"
-select_query = "select userid, userpw from users where userid=%s and userpw=%s"
