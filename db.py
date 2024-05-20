@@ -2,6 +2,7 @@
 import pymysql
 import hashlib
 import secrets
+
 def get_db_connection():
     conn = pymysql.connect(host='localhost', user='root', db='ips', charset='utf8')
     

@@ -67,8 +67,8 @@ def register():
         userpw_len = len(userpw)
 
         
-        print('??여기?')
         if existing_user[0][1] == userid:
+            flash("중복된 아이디입니다.")
             return redirect(url_for('register'))
 
         try:
