@@ -140,21 +140,22 @@ def get_locations_():
     else:
         flash("로그인이 필요합니다.")
         return redirect(url_for("login"))
-
+    
 # 비밀번호 초기화 엔드포인트
-@app.route('/reset_password', methods=['POST'])
+@app.route('/check_userid_dbpw', methods=['POST'])
 def reset_password():
     data = request.json
     user_id = data.get('userId')
+    db_pw = data.get('dbPw')
 
-    if not user_id:
-        return jsonify({"message": "User ID is required"}), 400
+    if not user_id or not db_pw:
+        return jsonify({"message": "User ID and database password are required"}), 400
 
-    reset_result = reset_user_password(user_id)
+    reset_result = check_userid_dbpw(user_id, db_pw)  # db_pw 인자를 전달해야 합니다.
     if reset_result:
         return jsonify({"tempPassword": reset_result}), 200
     else:
-        return jsonify({"message": "Failed to reset password"}), 500
+        return jsonify({"message": "Failed to reset password"}), 400  # 실패 시 400번 상태 코드를 반환합니다.
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=9999)
