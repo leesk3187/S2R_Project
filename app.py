@@ -9,8 +9,14 @@ app.secret_key = "test"
 
 @app.route("/")
 def index():
+    if 'uid' in session:
+        print(1)
+        
+        return render_template("index.html", title="S2R-Home")
+    else:
+
+        return render_template("index.html", title="S2R-Home")
     
-    return render_template("index.html", title="S2R-Home")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -38,7 +44,9 @@ def login():
 def logout():
     if request.method == 'POST':
         try:
-            session.clear('uid', None)
+
+            session.clear()
+
             flash("로그아웃 되었습니다.")
             return redirect(url_for('index'))
         except:
@@ -66,10 +74,10 @@ def register():
         userid_len = len(userid)
         userpw_len = len(userpw)
 
-        
-        if existing_user[0][1] == userid:
-            flash("중복된 아이디입니다.")
-            return redirect(url_for('register'))
+        if existing_user:
+            if existing_user[0][1] == userid:
+                flash("중복된 아이디입니다.")
+                return redirect(url_for('register'))
 
         try:
             db_port = int(db_port)
