@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 // Password reset successful
-                alert("Password has been reset for the user ID: " + userId);
+                var response = JSON.parse(xhr.responseText);
+                alert("Password has been reset for the user ID: " + userId + ". New temporary password: " + response.tempPassword);
             } else {
                 // Password reset failed
                 alert("Failed to reset password for the user ID: " + userId);
