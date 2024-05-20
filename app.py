@@ -173,17 +173,14 @@ def reset_password():
     data = request.json
     user_id = data.get('userId')
 
-    # 데이터베이스에서 사용자의 비밀번호 가져오기
-    password = get_password_by_id(user_id)
-    if password:
-        # 비밀번호 초기화
-        reset_result = reset_user_password(user_id)
-        if reset_result:
-            return jsonify({"message": "Password reset successfully"}), 200
-        else:
-            return jsonify({"message": "Failed to reset password"}), 500
+    if not user_id:
+        return jsonify({"message": "User ID is required"}), 400
+
+    reset_result = reset_user_password(user_id)
+    if reset_result:
+        return jsonify({"tempPassword": reset_result}), 200
     else:
-        return jsonify({"message": "User not found"}), 404
+        return jsonify({"message": "Failed to reset password"}), 500
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=9999)
