@@ -72,18 +72,29 @@ def get_locations():
         if conn:
             conn.close()
 
-# 사용자 ID를 기반으로 비밀번호를 가져오는 쿼리
-def get_password_by_id(user_id):
-    select_query = "SELECT userpw FROM users WHERE userid = %s"
+# id와 dbpw가 일치하는지 확인하는 쿼리
+def check_userid_dbpw(user_id, db_userpw):
+    check_query = "SELECT userid FROM users WHERE userid = %s AND db_userpw = %s"
     conn = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute(select_query, (user_id,))
-        password = cursor.fetchone()
-        if password:
-            return password[0]  # 해시된 비밀번호 반환
+
+        # user_id와 db_userpw 일치 여부 확인
+        cursor.execute(check_query, (user_id, db_userpw))
+        result = cursor.fetchone()
+        if result:
+            # ID와 PW가 일치함
+            # 비밀번호 가져오기 함수 호출
+            password = get_password_by_id(user_id)
+            if password:
+                # 비밀번호가 존재할 경우 임시 비밀번호 생성 함수 호출
+                return reset_user_password(user_id)
+            else:
+                print("Password not found.")
+                return None
         else:
+            print("User ID and password do not match.")
             return None
     except pymysql.MySQLError as e:
         print(f"SQL Error: {e}")
@@ -120,12 +131,35 @@ def reset_user_password(user_id):
     else:
         return None
 
+# 사용자 ID를 기반으로 비밀번호를 가져오는 쿼리
+def get_password_by_id(user_id):
+    select_query = "SELECT userpw FROM users WHERE userid = %s"
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(select_query, (user_id,))
+        password = cursor.fetchone()
+        if password:
+            return password[0]  # 해시된 비밀번호 반환
+        else:
+            return None
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+        return None
+    finally:
+        if conn:
+            conn.close()
+
+# 임시 비밀번호 생성 함수
 def generate_temp_password():
     # 12글자의 임시 비밀번호 생성
     return secrets.token_urlsafe(12)
 
+# 비밀번호를 해싱하는 함수
 def hash_password(password):
     # 비밀번호를 해싱하여 반환
     return hashlib.sha256(password.encode()).hexdigest()
-                     
-insert_query = "insert into users (userid, userpw) values(%s, %s)"
+
+insert_query = "insert into register (userid, userpw) values(%s, %s)"
+select_query = "select userid, userpw from register where userid=%s and userpw=%s"
