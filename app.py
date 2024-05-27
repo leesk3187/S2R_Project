@@ -113,7 +113,7 @@ def map():
     if 'uid' in session:
         google_maps_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
         return render_template(
-            "layout-static.html", google_maps_api_key=google_maps_api_key, title="S2R-Map"
+            "map.html", google_maps_api_key=google_maps_api_key, title="S2R-Map"
         )
     else:
         flash("로그인이 필요합니다.")
@@ -168,8 +168,8 @@ def failed_ip():
 @app.route("/get_locations")
 def get_locations_():
     if 'uid' in session:
-        locations = get_locations()
-        print(locations)
+        print('시발')
+        locations = get_locations(session['uid'])
         return jsonify(locations)
     else:
         flash("로그인이 필요합니다.")

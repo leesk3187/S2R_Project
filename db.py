@@ -4,7 +4,7 @@ import hashlib
 import secrets
 
 def get_db_connection():
-    conn = pymysql.connect(host='localhost', user='root', db='ips', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root', password='Tjrrb0313@', db='ips', charset='utf8')
     
     return conn
 
@@ -54,23 +54,27 @@ def get_all_ips(): # ip 가져오기
     
     
 # 위치 정보를 조회하는 쿼리 
-def get_locations():
-    select_query = "SELECT hostname, latitude, longitude FROM ipinfo"
-    conn = None
+def get_locations(user_idx):
     try:
-        conn = get_db_connection()
+        select_query_db_info = "SELECT db_ip, db_port, db_username, db_userpw, db_name FROM users WHERE id_=%s" # 사용자 DB 정보 가져오기
+        result = sql_select(select_query_db_info, (user_idx,))
+        print(result[0])
+        result = result[0]
+
+        host, port, user, password, db = result
+        port = int(port)
+
+        conn = pymysql.connect(host=host, port=port, user=user, password=password, db=db, charset='utf8') # 사용자 DB 연결
+        select_query = "SELECT * FROM ipInfo"
         cur = conn.cursor() 
         cur.execute(select_query)
+        result = cur.fetchall()
 
-         # Decimal 타입을 float로 변환
-        result = [(hostname, float(latitude), float(longitude)) for hostname, latitude, longitude in cur.fetchall()]
-        return result
+        print(result)
+        
     except pymysql.MySQLError as e:
         print(f"SQL Error: {e}")
-        return []
-    finally:
-        if conn:
-            conn.close()
+
 
 # id와 dbpw가 일치하는지 확인하는 쿼리
 def check_userid_dbpw(user_id, db_userpw):
