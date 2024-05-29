@@ -2,15 +2,13 @@
 import pymysql
 import hashlib
 import secrets
+import random
+import string
 
 def get_db_connection():
-    conn = pymysql.connect(host='localhost', user='root', password='Tjrrb0313@', db='ips', charset='utf8')
-    
+    conn = pymysql.connect(host='localhost', user='root', password='0000', db='ips', charset='utf8')    
     return conn
 
-def ip_db_connection(): # ip-list db 따로 구성할 경우 수정
-    conn = pymysql.connect(host='localhost', user='s2r',password='s2r', db='s2r', charset='utf8')
-    return conn
 
 def sql_select(query, data):
     try:
@@ -157,8 +155,17 @@ def get_password_by_id(user_id):
 
 # 임시 비밀번호 생성 함수
 def generate_temp_password():
-    # 12글자의 임시 비밀번호 생성
-    return secrets.token_urlsafe(12)
+    length = random.randint(8, 16)  # 8에서 16자리 사이의 길이 선택
+    special_character = '@'
+    all_characters = string.ascii_letters + string.digits + special_character
+    while True:
+        temp_password = ''.join(random.choice(all_characters) for _ in range(length))
+        if (any(c.islower() for c in temp_password) and
+            any(c.isupper() for c in temp_password) and
+            any(c.isdigit() for c in temp_password) and
+            special_character in temp_password):
+            break
+    return temp_password
 
 # 비밀번호를 해싱하는 함수
 def hash_password(password):

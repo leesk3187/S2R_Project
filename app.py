@@ -168,7 +168,6 @@ def failed_ip():
 @app.route("/get_locations")
 def get_locations_():
     if 'uid' in session:
-        print('시발')
         locations = get_locations(session['uid'])
         return jsonify(locations)
     else:
