@@ -146,9 +146,12 @@ def tables():
 
 @app.route("/success-ip")
 def success_ip():
+
     if 'uid' in session:
+        result = get_success_ip(session['uid'])
+        print(result)
         return render_template(
-            "success-ip.html", title="S2R-Success-IP"
+            "success-ip.html", title="S2R-Success-IP", ips=result
         )
     else:
         flash("로그인이 필요합니다.")
@@ -157,8 +160,9 @@ def success_ip():
 @app.route("/failed-ip")
 def failed_ip():
     if 'uid' in session:
+        result = get_failed_ip(session['uid'])
         return render_template(
-            "failed-ip.html", title="S2R-Failed-IP"
+            "failed-ip.html", title="S2R-Failed-IP", ips=result
         )
     else:
         flash("로그인이 필요합니다.")
@@ -168,8 +172,8 @@ def failed_ip():
 @app.route("/get_locations")
 def get_locations_():
     if 'uid' in session:
-        print('시발')
         locations = get_locations(session['uid'])
+        print(locations)
         return jsonify(locations)
     else:
         flash("로그인이 필요합니다.")

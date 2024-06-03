@@ -12,8 +12,9 @@ function initMap() {
       .then(response => response.json())
       .then(data => {
           data.forEach(locationArray => {
-              const [hostname, latitude, longitude] = locationArray; // 배열 구조 분해 할당을 사용
-              
+              let [hostname, country_name, region, city, postal,latitude, longitude, ban_start_time, access_time] = locationArray; // 배열 구조 분해 할당을 사용
+              latitude = parseFloat(latitude)
+              longitude = parseFloat(longitude)
               // 마커 생성
               const marker = new google.maps.Marker({
                   position: { lat: latitude, lng: longitude },
