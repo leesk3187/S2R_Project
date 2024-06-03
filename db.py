@@ -95,6 +95,28 @@ def get_success_ip(user_idx):
     except pymysql.MySQLError as e:
         print(f"SQL Error: {e}")
 
+def get_locations(user_idx):
+    try:
+        select_query_db_info = "SELECT db_ip, db_port, db_username, db_userpw, db_name FROM users WHERE id_=%s" # 사용자 DB 정보 가져오기
+        result = sql_select(select_query_db_info, (user_idx,))
+        print(result[0])
+        result = result[0]
+
+        host, port, user, password, db = result
+        port = int(port)
+        password = '1234'
+
+        conn = pymysql.connect(host=host, port=port, user=user, password=password, db=db, charset='utf8') # 사용자 DB 연결
+        select_query = "SELECT * FROM ipInfo"
+        cur = conn.cursor() 
+        cur.execute(select_query)
+        result = cur.fetchall()
+        print(result)
+        return result
+    
+    except pymysql.MySQLError as e:
+        print(f"SQL Error: {e}")
+
 
 # id와 dbpw가 일치하는지 확인하는 쿼리
 def check_userid_dbpw(user_id, db_userpw):
