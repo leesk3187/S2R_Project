@@ -11241,3 +11241,22 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+.brand-logo {
+  width: 370px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  max-width: 100%; /* Make sure the image is responsive */
+}
+.navbar-brand-wrapper {
+  display: flex;
+  align-items: center;
+  /* Set the background color to white */
+  padding: 10px; /* Add padding for spacing */
+  border-radius: 5px; /* Optional: Add border radius for rounded corners */
+}
+.brand-logo2 {
+  width: 40px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-left: 10px; /* Space between text and image */
+  
+}
