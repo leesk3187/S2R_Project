@@ -57,13 +57,13 @@
 </nav>
 <main>
 <div class="container-fluid px-4">
-  <h2 class="mt-4">Dashboard</h2>
+  <h2 class="mt-4">환영합니다!</h2>
   <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Dashboard</li>
   </ol>
   <div class="row">
     <div class="col-xl-3 col-md-6">
-      <div class="card bg-primary text-white mb-4">
+      <div class="ard highlight-card card bg-primary text-white mb-4">
         <div class="card-body">IP List</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <a class="small text-white stretched-link" href="ip-list">View Details</a>
@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="col-xl-3 col-md-6">
-      <div class="card bg-warning text-white mb-4">
+      <div class="ard highlight-card card bg-warning text-white mb-4">
         <div class="card-body">Map</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <a class="small text-white stretched-link" href="map">View Details</a>
@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="col-xl-3 col-md-6">
-      <div class="card bg-success text-white mb-4">
+      <div class="ard highlight-card card bg-success text-white mb-4">
         <div class="card-body">Success IP</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <a class="small text-white stretched-link" href="success-ip">View Details</a>
@@ -90,7 +90,7 @@
       </div>
     </div>
     <div class="col-xl-3 col-md-6">
-      <div class="card bg-danger text-white mb-4">
+      <div class="ard highlight-card card bg-danger text-white mb-4">
         <div class="card-body">Failed IP</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <a class="small text-white stretched-link" href="failed-ip">View Details</a>
@@ -103,7 +103,7 @@
     <div class="col-12 mt-5">
       <div class="brand-identity-section">
         <div class="text-center">
-          <img src="https://lh3.google.com/u/0/d/1B_lWPvI9JDQtP71-K_ZW6SktkuvfPAMl=w1728-h1347-iv2" alt="Logo image" class="brand-logo" />
+          <img src="{{ url_for('static', filename='img/mainLogo.png') }}" alt="로고 이미지" class="brand-logo" />
           <h2 class="mt-3">
             <strong>Everything from <span style="color: #0056b3;">trying to log in</span> <span style="color: #FE2E2E;">to blocking</span>, at a glance<br>(<span style="color: #0056b3;">로그인 시도</span>부터 <span style="color: #FE2E2E;">차단</span>까지, 모든 것을 한 눈에)</strong>
             <strong></strong>
